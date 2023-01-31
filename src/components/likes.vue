@@ -1,0 +1,199 @@
+<template>
+    <wc-likes 
+        ref="like" 
+        :data-hint="hint" 
+        :value="value" 
+        :liked="liked" 
+        :fetch="fetch" 
+        :disabled="disabled">
+    </wc-likes>
+</template>
+<script lang="ts">
+import WCLikes from 'wc-likes';
+
+export default {
+    name: 'v-likes',
+    setup(props) {
+        console.log('setup v-like', props);
+    },
+    props: {
+        submitLike:Function,
+        fetchLikes:Function,
+        value:Number,
+        liked:Boolean,
+        fetch:Boolean,
+        disabled:Boolean,
+        hint:String,
+    },
+    mounted() {
+        if(customElements.get('wc-likes') === undefined)  {
+            window.customElements.define('wc-likes', WCLikes);
+        }
+        let Like = this.$refs.like as any;
+        Like.fetchSubmitLikes = this.submitLike;
+        Like.fetchAsyncLikes = this.fetchLikes;
+    }
+}
+
+</script>
+<style lang="scss">
+.vue-like {
+    display: inline-flex;
+}
+.wc-likes {
+    margin-left: 0.5em;
+}
+:root {
+    --wc-likes-color-red: #f00;
+    --wc-likes-color-bg: #fafafa;
+}
+@keyframes wcLikesSubmit {
+    0% {
+        visibility: visible;
+        top: 0;
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        top: -100px;
+        font-size: 4em;
+    }
+}
+@keyframes wcLikesFetch {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.wc-likes {
+    display: inline-flex;
+    align-items: center;
+    padding: 0px 1em 0px 0px;
+    border:1px solid var(--wc-likes-color-bg);
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    user-select:none;
+    &:hover {
+        background-color: var(--wc-likes-color-bg);
+        border-color: var(--wc-likes-color-bg);
+        color: #000;
+    }
+    &:after {
+        min-width: 100px;
+        text-align: center;
+        white-space: nowrap;
+        background-color: var(--wc-likes-color-bg);
+        color: var(--color-blue-500);
+    }
+    /* hints */
+    &[data-hint] {
+        position: relative;
+    }
+    &[data-hint]:hover:after {
+        visibility: visible;
+        transform: translate(-50%, -100%);
+    }
+    &[data-hint]:after {
+        visibility: hidden;
+        position: absolute;
+        transition: transform .2s ease;
+        left: 50%;
+        top: -3px;
+        transform: translate(-50%, 0%);
+        background-color: rgba(0,0,0,0.9);
+        color: #fff;
+        content: attr(data-hint);
+        display: inline-block;
+        padding: 3px;
+        border-radius: 3px;
+        font-size: 0.8em;
+        line-height: 0.8em;
+    }
+    & > button {
+        user-select: contain;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 2em;
+        height: 2em;
+        transition: all 0.2s ease;
+        margin-right: 10px;
+        color: var(--wc-likes-color-red);
+        background-color: #fff;
+        border: none;
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        &:hover {
+            background-color: var(--color-red-100);
+            border: none;
+            & > svg {
+                fill: var(--wc-likes-color-red);
+            }
+        }
+        &:after {
+            visibility: hidden;
+            color: var(--wc-likes-color-red);
+            content: '♥';
+            position: absolute;
+        }
+        & > svg {
+            fill: var(--color-red-100);
+            min-width: 16px;
+        }
+    }
+    //fetch like state
+    &.-fetch {
+        opacity: 0.8;
+        pointer-events: none;
+        & > button:before {
+            position:absolute;
+            border: 2px solid var(--color-red-100);
+            border-top: 2px solid var(--wc-likes-color-red);
+            border-radius: 50%;
+            display: block;
+            width: 2em;
+            height: 2em;
+            content: '';
+            animation: wcLikesFetch 1s linear infinite;
+        }
+    }
+    //liked state
+    &.-liked {
+        background-color: var(--wc-likes-color-bg);
+        border-color: var(--wc-likes-color-bg);
+        color: #111;
+        & > button {
+            background-color: var(--wc-likes-color-red);
+            &:after {
+                animation-fill-mode: forwards;
+                animation-duration: 0.4s;
+                animation-name: wcLikesSubmit;
+            }
+            & > svg {
+                fill: #fff;
+                stroke: none;
+            }
+        }
+    }
+    &.-disabled {
+        cursor: none;
+        filter: brightness(40%);
+        &:hover {
+            background-color: transparent;
+            border-color: inherit;
+        }
+        & > button {
+            
+            &:hover {
+                background-color: transparent;
+                border: none;
+                & > svg {
+                    fill: rgba(255,255,255,0.5);
+                }
+            }
+        }
+    }
+    
+}
+
+</style>

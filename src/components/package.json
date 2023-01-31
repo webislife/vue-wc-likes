@@ -1,0 +1,30 @@
+{
+  "name": "vue-wc-likes",
+  "version": "1.0.0",
+  "description": "Lightweight and based on native web-components wc-likes vue component wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webislife/vue-wc-likes.git"
+  },
+  "keywords": [
+    "vue3",
+    "likes",
+    "custom-elements",
+    "web-components",
+    "ts"
+  ],
+  "author": "strokoff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webislife/vue-wc-likes/issues"
+  },
+  "homepage": "https://github.com/webislife/vue-wc-likes#readme",
+  "dependencies": {
+    "vue": "^3.2.45",
+    "wc-likes": "^1.0.4"
+  }
+}
