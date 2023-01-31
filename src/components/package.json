@@ -1,5 +1,5 @@
 {
-  "name": "vue-wc-likes",
+  "name": "@webislife/vue-wc-likes",
   "version": "1.0.0",
   "description": "Lightweight and based on native web-components wc-likes vue component wrapper",
   "main": "index.js",
